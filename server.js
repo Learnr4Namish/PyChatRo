@@ -86,7 +86,7 @@ app.post('/createRoom', (req,res) => {
      <div style="margin-left:8px; font-size:20px;">
      <p class="text-50">Successfully Created your chat-room. Please share the following details with the participants so that they can join.</p>
      <p class="text-50">Room ID: ${roomID}</p>
-     <p class="text-50">Room Password: ${roomPassword}></p>
+     <p class="text-50">Room Password: ${roomPassword}</p>
      <p class="text-50">You can also share this link with them:-</p>
      <p class="text-50">https://pychatro.herokuapp.com/join?roomID=${roomID}&roomPassword=${roomPassword}</p>
      </div>
