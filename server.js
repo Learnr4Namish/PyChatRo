@@ -48,6 +48,6 @@ app.post('/createRoom', (req,res) => {
     db.collection('rooms').doc(roomID).collection('auth').doc('password').set(adata);
     res.send("Success!")
 });
-app.listen(80, ()=> {
+app.listen(process.env.PORT || 3000, ()=> {
     console.log("PyChatRo: Server started!")
 });
