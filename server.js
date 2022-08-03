@@ -46,7 +46,50 @@ app.post('/createRoom', (req,res) => {
     }
     db.collection('rooms').doc(roomID).set(data);
     db.collection('rooms').doc(roomID).collection('auth').doc('password').set(adata);
-    res.send("Success!")
+    res.send(`
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>PyChatRo | Chat on the go with full Security (Made by Namish Kumar)</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap');
+    .mainBtn {
+        width: 10em; font-size:20px; padding: 10px; margin-left: 8px;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        background-repeat:none;
+        height: 100%;
+        color: rgb(0, 0, 0);
+    }
+    html {
+        height: 100%;
+    }
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg" style="color: rgb(0, 0, 0);">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="font-size: 26.5px; color: rgb(0, 0, 0); font-weight: 500;">PyChatRo</a>
+          <div class="navbar-toggler" style="border: none;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="material-symbols-outlined">
+                menu
+                </span>
+            </div>
+        </div>
+      </nav>
+     <p class="text-50">Successfully Created your chat-room. Please share the following details with the participants so that they can join.</p>
+     <p class="text-50">Room ID: ${roomID}</p>
+     <p class="text-50">Room Password: ${roomPassword}></p>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+</html>
+    `)
 });
 app.listen(process.env.PORT || 3000, ()=> {
     console.log("PyChatRo: Server started!")
