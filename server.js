@@ -115,12 +115,12 @@ app.post('/joinRoom', (req,res) => {
     const roomID = bodyContent.roomID;
     const roomPassword = bodyContent.roomPassword;
     const userName = bodyContent.userName;
-    console.log(bodyContent)
     const db = getFirestore();
     const roomRef = db.collection('rooms').doc(roomID).collection('auth').doc('password');
     const doc = roomRef.get();
     const doc2 = db.collection('rooms').doc(roomID).get();
     if (doc2.exists) {
+        
         console.log(doc.data());
         const actualRoomPassword = doc.data().password;
         const passwordIsValid = roomPassword === actualRoomPassword;
@@ -270,7 +270,7 @@ app.post('/joinRoom', (req,res) => {
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
       </body>
       </html>
-      `)
+      `);
     }
 });
 app.get('/join', (req,res) => {
