@@ -43,17 +43,22 @@
             </div>
         </div>
       </nav>
-      <p class="text-50">Please enter the following details to create your chat room:</p>
-      <form method="post" action="/createRoom" style="margin-left: 8px; font-size:20px; margin-top: 0px;">
+      <p class="text-50">Please enter the following details to join your chat room:</p>
+      <form method="post" action="/joinRoom" style="margin-left: 8px; font-size:20px; margin-top: 0px;">
         <div class="form-group">
           <label for="userName">Your Name:-</label>
           <input type="text" class="form-control" id="userName" style="padding: 10px; font-size:20px;" name="userName" aria-describedby="emailHelp" placeholder="Your Name" required>
-          <small id="emailHelp" class="form-text text-muted">All these details are sent to the server securely! No one other than you has the access to your data.</small>
         </div>
         <div class="form-group">
-          <label for="roomPassword">Strong Password for your room:-</label>
-          <input type="password" name="roomPassword" class="form-control" style="padding: 10px; font-size:20px;" id="exampleInputPassword1" placeholder="Room Password" required>
+          <label for="roomID">Room ID</label>
+          <input type="number" name="roomID" class="form-control" style="padding: 10px; font-size:20px;" id="exampleInputPassword1" placeholder="Room ID" required>
         </div>
+        <div class="form-group">
+            <label for="roomID">Room Password</label>
+            <input type="password" name="roomPassword" class="form-control" style="padding: 10px; font-size:20px;" id="exampleInputPassword1" placeholder="Room Password" required>
+          </div>
+          <input name="userRole" value="participant" hidden>
+          <small id="emailHelp" class="form-text text-muted">All these details are sent to the server securely! No one other than you and the participants of the respective chat-room has the access to your data.</small>
         <button type="submit" class="btn btn-primary mainBtn" style="margin-left: 0; margin-top:10px;">Submit</button>
       </form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
