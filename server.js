@@ -106,7 +106,7 @@ app.post('/createRoom', (req,res) => {
     console.log(`PyChatRo: Successfully created the room by person named ${bodyContent.userName} with the room id ${roomID}`);
 });
 app.listen(process.env.PORT || 3000, ()=> {
-    console.log("PyChatRo: Server started!")
+    console.log(`PyChatRo: Server started at port 3000 or ${process.env.PORT}!`)
 });
 app.post('/joinRoom', (req,res) => {
     console.log(`PyChatRo: Requested Client IP address: ${req.ip}`);
@@ -116,11 +116,7 @@ app.post('/joinRoom', (req,res) => {
     const roomPassword = bodyContent.roomPassword;
     const userName = bodyContent.userName;
     const db = getFirestore();
-    const roomRef = db.collection('rooms').doc(roomID).collection('auth').doc('password');
-    const doc = roomRef.get();
-    const doc2 = db.collection('rooms').doc(roomID).get();
-    if (doc2.exists) {
-        
+   /* if (db.collection('rooms').doc("namish").get().exists) {
         console.log(doc.data());
         const actualRoomPassword = doc.data().password;
         const passwordIsValid = roomPassword === actualRoomPassword;
@@ -170,8 +166,8 @@ app.post('/joinRoom', (req,res) => {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
         </body>
         </html>
-        `);
-        }else{
+        `);*/
+        /*}else{*/
           res.send (`
           <!DOCTYPE html>
         <html lang="en">
@@ -216,15 +212,14 @@ app.post('/joinRoom', (req,res) => {
        <input name="roomID" value="${roomID}" hidden>
        <input name="roomPassword" value="${roomPassword}" hidden>
        <input name="userName" value=${userName}" hidden>
+       <button type="submit" class="btn btn-primary mainBtn">Enter the room</button>
         </form>
              </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
         </body>
         </html>
         `);
-        }
-    } else {
-      console.log(`PyChatRo: No such Chat Room called ${roomID}`);
+      /*console.log(`PyChatRo: No such Chat Room called ${roomID}`);
       res.send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -264,14 +259,13 @@ app.post('/joinRoom', (req,res) => {
             </nav>
            <div style="margin-left:8px; font-size:20px;">
            <p class="text-50">We are sorry but the room id ${roomID} is not a valid PyChatRo chat-room. It may have been expired or deleted by the admin. Consider creating a chat room if you want to.</p>
-           <button type="button" class="btn btn-primary mainBtn" onclick="location.href = '/newRoom'">Create my chat room</button>
+           
       </form>
            </div>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
       </body>
       </html>
-      `);
-    }
+      `);*/
 });
 app.get('/join', (req,res) => {
     console.log(`PyChatRo: Requested Client IP address: ${req.ip}`);
@@ -311,6 +305,32 @@ app.post('/chat', (req,res) => {
             html {
                 height: 100%;
             }
+            .controlPanel {
+                bottom:0;
+                position:absolute;
+                display:flex;
+                justify-content:left;
+                background-color:#ff0077;
+                padding:15px;
+                color:white;
+                margin-left:0;
+                width:100%;
+            }
+            .messageTyper {
+                bottom:0;
+                position:absolute;
+                display:flex;
+                justify-content:left;
+                flex-direction:row;
+                margin-left:0;
+                margin-bottom:25px;
+            }
+            #messageForm {
+                display:flex;
+                justify-content:left;
+                flex-direction:row;
+                margin-bottom:60px;
+            }
         </style>
         <body>
             <nav class="navbar navbar-expand-lg" style="color: rgb(0, 0, 0);">
@@ -326,15 +346,33 @@ app.post('/chat', (req,res) => {
                 </div>
               </nav>
              <div style="margin-left:8px; font-size:20px;">
+             <div class="controlPanel">
+             <div>
+             <span class="material-symbols-outlined" style="font-size:36px;">
+             person_add
+             </span>
+             </div>
+             <div>
+             <span class="material-symbols-outlined" style="font-size:32px; margin-left:15px; margin-top:3px;">
+delete
+</span>
+             </div>
+             </div>
              <div id="chatsContainer">
 
+             </div>
+             <div class="messageTyper">
+             <form id="messageForm">
+             <input type="text" class="form-control" id="messageText" style="padding: 10px; font-size:20px; width:75%;" name="messageText" aria-describedby="emailHelp" placeholder="Enter your message" required>
+             <button type="submit" class="btn btn-primary mainBtn" style="margin-left: 20px; margin-top:10px;">Send</button>
+             </form>
              </div>
              </div>
              <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
              <script>
              axios.post('/readMessages', {
-                roomID: ${roomID},
-                roomPassword: ${roomPassword}
+                roomID: String("${roomID}"),
+                roomPassword: String("${roomPassword}")
               })
               .then(function (response) {
                 console.log(response);
