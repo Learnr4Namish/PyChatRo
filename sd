@@ -1,0 +1,175 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+            <title>PyChatRo | Chat on the go with full Security (Made by Namish Kumar)</title>
+        </head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap');
+            .mainBtn {
+                width: 10em; font-size:20px; padding: 10px; margin-left: 8px;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                background-repeat:none;
+                height: 100%;
+                color: rgb(0, 0, 0);
+            }
+            html {
+                height: 100%;
+            }
+            .controlPanel {
+                bottom:0;
+                position:absolute;
+                display:flex;
+                justify-content:left;
+                background-color:#ff0077;
+                padding:15px;
+                color:white;
+                margin-left:0;
+                width:100%;
+            }
+            #messageText {
+            width:95%;
+            }
+            .messageTyper {
+                bottom:0;
+                position:absolute;
+                display:flex;
+                justify-content:left;
+                flex-direction:row;
+                margin-left:0;
+                margin-bottom:45px;
+            }
+            #messageForm {
+                display:flex;
+                justify-content:left;
+                flex-direction:row;
+                margin-bottom:60px;
+            }
+            .text-50 {
+                margin-left: 8px;
+                font-size: 20px;
+            }
+            .text-50-desp {
+                margin-left: 8px;
+                font-size: 20px;
+                color: #535353;
+            }
+            .warning {
+                margin-left: 8px;
+                font-size: 20px;
+                color:red;
+            }
+        </style>
+        <body>
+            <nav class="navbar navbar-expand-lg" style="color: rgb(0, 0, 0);">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#" style="font-size: 26.5px; color: rgb(0, 0, 0); font-weight: 500;">PyChatRo</a>
+                  <div class="navbar-toggler" style="border: none;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="material-symbols-outlined">
+                        menu
+                        </span>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+</div>
+                </div>
+              </nav>
+             <div style="margin-left:8px; font-size:20px;">
+             <div class="modal-dialog modal-dialog-centered">
+             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+             <div class="modal-dialog">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <h5 class="modal-title" id="staticBackdropLabel">Chat Room Settings</h5>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div class="modal-body">
+                   <p class="text-50" style="font-size:24px;"><b>Invitation settings</b></p>
+                   <hr>
+                   <p class="text-50"><b>Room ID: ${roomID}</b></p>
+                   <p class="text-50"><b>Room Password: ${roomPassword}</b></p>
+                   <p class="warning"><b>Please be careful that you send all these details to a trusted person! otherwise, the chat room can get hacked!</b></p>
+                   <hr>
+                   <p class="text-50" style="font-size:24px;"><b>Invitation settings</b></p>
+                   <p class="text-50-desp">You can manage the chats and messages in this chat-room if you are the admin.</p>
+                   <p class="text-50" style="font-size:24px;"><b>Delete all chats</b></p>
+                   <p class="text-50-desp">Click this option if you want to delete all messages send in this chat room</p>
+                   <button type="button" class="btn btn-danger mainBtn">Delete all</button>
+                 </div>
+                 <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+                 </div>
+               </div>
+             </div>
+           </div>
+</div>
+
+             <div class="controlPanel">
+             <div>
+             <span class="material-symbols-outlined" style="font-size:35px; margin-left:15px; margin-top:3px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+             settings
+             </span>
+             </div>
+             <div>
+             <span class="material-symbols-outlined" style="font-size:32px; margin-left:15px; margin-top:3px;">
+delete
+</span>
+
+             </div>
+             </div>
+             <div id="chatsContainer">
+
+             </div>
+             <div class="messageTyper">
+             <form id="messageForm">
+             <input type="text" class="form-control" id="messageText" style="padding: 10px; font-size:20px; width:75%;" name="messageText" aria-describedby="emailHelp" placeholder="Enter your message" required>
+             <button type="button" class="btn btn-primary mainBtn" style="margin-left: 20px; margin-top:10px;" onclick="sendMessage()">Send</button>
+             </form>
+             </div>
+             </div>
+             <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+             <script>
+             axios.post('/readMessages', {
+                roomID: String("${roomID}"),
+                roomPassword: String("${roomPassword}")
+              })
+              .then(function (response) {
+                console.log(response);
+                document.getElementById("chatsContainer").innerHTML += ""; 
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+              function sendMessage() {
+                const mainMessage = document.getElementById("messageText").value;
+                if(mainMessage === "") {
+                    alert("PyChatRo Error: Chat message can't be empty!");
+                }else{
+                    axios.post('/writeMessages', {
+                        sender: String("${userName}"),
+                        message: String(mainMessage)
+                      })
+                      .then(function (response) {
+                        console.log(response);
+                        alert("Succesfully send your message!");
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                        alert("Unable to send your message! Please try again!");
+                      });
+                }
+              }
+              document.getElementById("messageForm").onsubmit = function(e) {
+                e.preventDefault();
+              }
+             </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+        </body>
+        </html>

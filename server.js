@@ -316,6 +316,9 @@ app.post('/chat', (req,res) => {
                 margin-left:0;
                 width:100%;
             }
+            #messageText {
+            width:95%;
+            }
             .messageTyper {
                 bottom:0;
                 position:absolute;
@@ -323,13 +326,27 @@ app.post('/chat', (req,res) => {
                 justify-content:left;
                 flex-direction:row;
                 margin-left:0;
-                margin-bottom:25px;
+                margin-bottom:45px;
             }
             #messageForm {
                 display:flex;
                 justify-content:left;
                 flex-direction:row;
                 margin-bottom:60px;
+            }
+            .text-50 {
+                margin-left: 8px;
+                font-size: 20px;
+            }
+            .text-50-desp {
+                margin-left: 8px;
+                font-size: 20px;
+                color: #535353;
+            }
+            .warning {
+                margin-left: 8px;
+                font-size: 20px;
+                color:red;
             }
         </style>
         <body>
@@ -346,16 +363,47 @@ app.post('/chat', (req,res) => {
                 </div>
               </nav>
              <div style="margin-left:8px; font-size:20px;">
+             <div class="modal-dialog modal-dialog-centered">
+             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+             <div class="modal-dialog">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <h5 class="modal-title" id="staticBackdropLabel">Chat Room Settings</h5>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div class="modal-body">
+                   <p class="text-50" style="font-size:24px;"><b>Invitation settings</b></p>
+                   <hr>
+                   <p class="text-50"><b>Room ID: ${roomID}</b></p>
+                   <p class="text-50"><b>Room Password: ${roomPassword}</b></p>
+                   <p class="warning"><b>Please be careful that you send all these details to a trusted person! otherwise, the chat room can get hacked!</b></p>
+                   <hr>
+                   <p class="text-50" style="font-size:24px;"><b>Invitation settings</b></p>
+                   <p class="text-50-desp">You can manage the chats and messages in this chat-room if you are the admin.</p>
+                   <p class="text-50" style="font-size:24px;"><b>Delete all chats</b></p>
+                   <p class="text-50-desp">Click this option if you want to delete all messages send in this chat room</p>
+                   <button type="button" class="btn btn-danger mainBtn">Delete all</button>
+                 </div>
+                 <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+                 </div>
+               </div>
+             </div>
+           </div>
+</div>
+
              <div class="controlPanel">
              <div>
-             <span class="material-symbols-outlined" style="font-size:36px;">
-             person_add
+             <span class="material-symbols-outlined" style="font-size:35px; margin-left:15px; margin-top:3px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+             settings
              </span>
              </div>
              <div>
              <span class="material-symbols-outlined" style="font-size:32px; margin-left:15px; margin-top:3px;">
 delete
 </span>
+
              </div>
              </div>
              <div id="chatsContainer">
@@ -364,7 +412,7 @@ delete
              <div class="messageTyper">
              <form id="messageForm">
              <input type="text" class="form-control" id="messageText" style="padding: 10px; font-size:20px; width:75%;" name="messageText" aria-describedby="emailHelp" placeholder="Enter your message" required>
-             <button type="submit" class="btn btn-primary mainBtn" style="margin-left: 20px; margin-top:10px;">Send</button>
+             <button type="button" class="btn btn-primary mainBtn" style="margin-left: 20px; margin-top:10px;" onclick="sendMessage()">Send</button>
              </form>
              </div>
              </div>
@@ -376,10 +424,33 @@ delete
               })
               .then(function (response) {
                 console.log(response);
+                document.getElementById("chatsContainer").innerHTML += ""; 
               })
               .catch(function (error) {
                 console.log(error);
               });
+              function sendMessage() {
+                const mainMessage = document.getElementById("messageText").value;
+                if(mainMessage === "") {
+                    alert("PyChatRo Error: Chat message can't be empty!");
+                }else{
+                    axios.post('/writeMessages', {
+                        sender: String(${userName}),
+                        message: String(mainMessage)
+                      })
+                      .then(function (response) {
+                        console.log(response);
+                        alert("Succesfully sent your message!");
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                        alert("Unable to send your message! Please try again!");
+                      });
+                }
+              }
+              document.getElementById("messageForm").onsubmit = function(e) {
+                e.preventDefault();
+              }
              </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
         </body>
@@ -391,5 +462,31 @@ app.post('/delete', (req,res) => {
    
 });
 app.post('/readMessages', (req,res) => {
-   
+    console.log(`PyChatRo: Requested Client IP address: ${req.ip}`);
+    const bodyContent = req.body;
+    const roomID = bodyContent.roomID;
+    const roomPassword = bodyContent.roomPassword;
+    const doc = db.collection('rooms').doc(roomID);
+const observer = doc.onSnapshot(docSnapshot => {
+  res.end(docSnapshot);
+  res.send(docSnapshot);
+}, err => {
+  res.end(err);
+});
+
+});
+
+app.get('/readMessages', (req,res) => {
+    console.log(`PyChatRo: Requested Client IP address: ${req.ip}`);
+    res.send("PyChatRo Backend: Method Not Allowed!");
+});
+
+app.post('/writeMessage', (req,res) => {
+    console.log(`PyChatRo: Requested Client IP address: ${req.ip}`);
+    
+});
+
+app.get('/writeMessage', (req,res) => {
+    console.log(`PyChatRo: Requested Client IP address: ${req.ip}`);
+    res.send("PyChatRo Backend: Method Not Allowed!");
 });
